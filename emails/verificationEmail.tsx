@@ -1,3 +1,5 @@
+import * as React from "react";
+
 import {
   Html,
   Head,
@@ -49,7 +51,7 @@ const VerificationEmail: React.FC<VerificationEmailProps> = ({
           </Text>
           <Text style={{ fontSize: "16px", color: "#555" }}>
             Use the following OTP to complete your verification. This OTP is
-            valid for 10 minutes.
+            valid for 1 hour.
           </Text>
         </Section>
 
