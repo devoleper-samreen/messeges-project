@@ -79,7 +79,7 @@ tracking-tight mb-6"
               />
             </div>
 
-            <Button type="submit" className="w-full mt-6">
+            <Button type="submit" className="w-full mt-6 cursor-pointer">
               {form.formState.isSubmitting ? (
                 <Loader2 className="animate-spin" />
               ) : (

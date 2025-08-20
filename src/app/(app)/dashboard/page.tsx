@@ -11,15 +11,17 @@ import axios, { AxiosError } from "axios";
 import { Loader2, RefreshCcw } from "lucide-react";
 import { User } from "next-auth";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 function page() {
+  const router = useRouter();
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isSwitching, setIsSwitching] = useState<boolean>(false);
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   const username = (session?.user as User)?.username || "";
   const [baseUrl, setBaseUrl] = useState("");
@@ -105,12 +107,17 @@ function page() {
     fetchAcceptMessages();
   }, [fetchAcceptMessages, fetchMessages, setValue]);
 
-  if (!session || !session.user) {
+  if (status === "loading") {
     return (
-      <div>
-        <Loader2 className="animate-spin text-black" />
+      <div className="flex justify-center items-center h-[85vh] w-[95vw]">
+        <Loader2 className="h-10 w-10 animate-spin" />
       </div>
     );
+  }
+
+  if (!session) {
+    router.push("/sign-in");
+    return null;
   }
 
   return (
@@ -129,7 +136,7 @@ function page() {
           />
           <Button
             onClick={copyToClipboard}
-            className="rounded-xl text-white px-4 py-2 shadow"
+            className="rounded-xl text-white px-4 py-2 shadow cursor-pointer"
           >
             Copy
           </Button>
@@ -143,8 +150,13 @@ function page() {
           onCheckedChange={handleSwitchChange}
           disabled={isSwitching}
         />
-        <span className="ml-2">
-          Accept Messages: {acceptMessages ? "On" : "Off"}
+        <span className={`ml-2`}>
+          Accept Messages :
+          <span
+            className={`${acceptMessages ? "text-green-500" : "text-red-500"} `}
+          >
+            {acceptMessages ? " On" : " Off"}
+          </span>
         </span>
       </div>
       <Separator />

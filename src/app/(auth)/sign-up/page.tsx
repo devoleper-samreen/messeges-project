@@ -64,8 +64,9 @@ const page = () => {
 
     try {
       const response = await axios.post("/api/signup", data);
-      toast.success(response.data.message);
+
       router.replace(`/verify/${username}`);
+      toast.success(response.data.message);
     } catch (error) {
       console.log(error);
       toast.error((error as AxiosError<ApiResponse>).response?.data.message);
@@ -122,7 +123,7 @@ tracking-tight lg:text-5xl mb-6"
             )}
             {usernameMessage && (
               <p
-                className={`text-sm ${usernameMessage === "Username is available" ? "text-green-500" : "text-red-500"}`}
+                className={`text-sm mt-0 ${usernameMessage === "Username is available" ? "text-green-500" : "text-red-500"}`}
               >
                 {usernameMessage}
               </p>
