@@ -5,7 +5,7 @@ import UserModel from "@/model/user";
 import { User } from "next-auth";
 import mongoose from "mongoose";
 
-export async function POST(request: Request) {
+export async function GET(request: Request) {
   await dbConnect();
   const session = await getServerSession(authOptions);
   const user = session?.user as User;
@@ -24,7 +24,7 @@ export async function POST(request: Request) {
 
   try {
     const user = await UserModel.aggregate([
-      { $match: { id: userId } },
+      { $match: { _id: userId } },
       { $unwind: "$messages" },
       { $sort: { "messages.createdAt": -1 } },
       {

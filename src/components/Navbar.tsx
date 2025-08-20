@@ -1,36 +1,3 @@
-// "use client";
-// import React from "react";
-// import Link from "next/link";
-// import { useSession, signOut } from "next-auth/react";
-// import { User } from "next-auth";
-// import { Button } from "./ui/button";
-
-// function Navbar() {
-//   const { data: session } = useSession();
-//   const user = session?.user as User;
-//   return (
-//     <nav>
-//       <div>
-//         <a href="#">Mystry Message</a>
-//         {session ? (
-//           <>
-//             <span>Welcome {user?.name || user?.email}</span>
-//             <span>
-//               <Button onClick={() => signOut()}>Logout</Button>
-//             </span>
-//           </>
-//         ) : (
-//           <Link href="/sign-in">
-//             <Button>Sign In</Button>
-//           </Link>
-//         )}
-//       </div>
-//     </nav>
-//   );
-// }
-
-// export default Navbar;
-
 "use client";
 import React from "react";
 import Link from "next/link";
@@ -55,7 +22,9 @@ function Navbar() {
             <>
               <span className="text-gray-700 text-sm md:text-base">
                 Welcome,{" "}
-                <span className="font-medium">{user?.name || user?.email}</span>
+                <span className="font-medium">
+                  @{user?.username || user?.email}
+                </span>
               </span>
               <Button
                 onClick={() => signOut()}

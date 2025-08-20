@@ -26,6 +26,7 @@ import { signIn } from "next-auth/react";
 
 const page = () => {
   const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   //zod impletation
   const form = useForm({
@@ -37,6 +38,7 @@ const page = () => {
   });
 
   const submitHandler = async (data: z.infer<typeof signinSchema>) => {
+    setIsSubmitting(true);
     const result = await signIn("credentials", {
       redirect: false,
       identifier: data.identifier,
@@ -45,6 +47,7 @@ const page = () => {
 
     if (result?.error) {
       toast.error(result.error);
+      setIsSubmitting(false);
     }
 
     if (result?.url) {
@@ -105,7 +108,7 @@ tracking-tight mb-6"
               )}
             />
             <Button type="submit" className="cursor-pointer">
-              Sign in
+              {isSubmitting ? <Loader className="animate-spin" /> : "Sign in"}
             </Button>
           </form>
           <div className="text-center mt-4">

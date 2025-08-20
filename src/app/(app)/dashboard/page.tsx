@@ -11,7 +11,7 @@ import axios, { AxiosError } from "axios";
 import { Loader2, RefreshCcw } from "lucide-react";
 import { User } from "next-auth";
 import { useSession } from "next-auth/react";
-import { use, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -20,9 +20,16 @@ function page() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isSwitching, setIsSwitching] = useState<boolean>(false);
   const { data: session } = useSession();
-  if (!session || !session.user) {
-    return <div>Please Login</div>;
-  }
+
+  const username = (session?.user as User)?.username || "";
+  const [baseUrl, setBaseUrl] = useState("");
+  const profileUrl = baseUrl ? `${baseUrl}/u/${username}` : "";
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setBaseUrl(`${window.location.protocol}//${window.location.host}`);
+    }
+  }, []);
 
   const form = useForm({
     resolver: zodResolver(acceptMessageSchema),
@@ -52,7 +59,7 @@ function page() {
         const response = await axios.get<ApiResponse>("/api/get-messages");
         setMessages(response.data.messages || []);
 
-        if (refresh) {
+        if (refresh === true) {
           toast.success("Refreshed messages");
         }
       } catch (error) {
@@ -63,17 +70,8 @@ function page() {
         setIsSwitching(false);
       }
     },
-    [setIsLoading, setMessages]
+    [setIsLoading, setMessages, setIsSwitching]
   );
-
-  useEffect(() => {
-    if (!session || !session.user) {
-      return;
-    }
-
-    fetchMessages();
-    fetchAcceptMessages();
-  }, [fetchAcceptMessages, fetchMessages, session, setValue]);
 
   //handle switch case
   const handleSwitchChange = async () => {
@@ -93,11 +91,6 @@ function page() {
     setMessages(messages.filter((message) => message._id !== messageId));
   };
 
-  const { username } = session?.user as User;
-  //TODO: more research
-  const baseUrl = `${window.location.protocol}//${window.location.host}`;
-  const profileUrl = `${baseUrl}/u/${username}`;
-
   const copyToClipboard = async () => {
     try {
       await navigator.clipboard.writeText(profileUrl);
@@ -107,88 +100,39 @@ function page() {
     }
   };
 
+  useEffect(() => {
+    fetchMessages();
+    fetchAcceptMessages();
+  }, [fetchAcceptMessages, fetchMessages, setValue]);
+
   if (!session || !session.user) {
-    return <div>Please Login</div>;
+    return (
+      <div>
+        <Loader2 className="animate-spin text-black" />
+      </div>
+    );
   }
 
-  //  return (
-  // <div className="my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
-  //      <h1 className="text-4xl font-bold mb-4">
-  //        User Dashboard
-  // </h1>
-  // <div className="mb-4">
-  // <h2 className="text-lg font-semibold mb-2">Copy Your
-  // Unique Link</h2>{''}
-  //        <div className="flex items-center">
-  //          <input
-  // type="text"
-  // value={profileUrl}
-  // disabled
-  // className="input input-bordered w-full p-2 mr-2"
-  // />
-  // <Button onClick={copyToClipboard}>Copy</Button>
-  //        </div>
-  //      </div>
-
-  //      <div className="mb-4">
-  // <Switch
-  // {...register('acceptMessage')}
-  // checked={acceptMessages}
-  // onCheckedChange={handleSwitchChange}
-  // disabled={isSwitching}
-  // />
-  //        <span className="ml-2"> Accept Messages: {acceptMessages ? 'On' : 'Off'}
-  // </span>
-  // </div>
-  //      <Separator />
-
-  //      <Button
-  // className="mt-4"
-  // variant="outline"
-  // onClick={(e) => {
-  // e.preventDefault();
-  // fetchMessages(true);
-  // }}
-  //      >
-  //        {isLoading ? (
-  // <Loader2 className="h-4 w-4 animate-spin" />
-  // ):(
-  // <RefreshCcw className="h-4 w-4"
-  // ) }
-  //      </Button>
-
-  //      <div className="mt-4 grid grid-cols-1 md:grid-cols-2
-  // gap-6">
-  // {messages.length > 0 ? (
-  // messages.map((message, index)
-  // <MessageCard
-  // key={message._id}
-  // message={message}
-  // onMessageDelete={handleDeleteMessage}
-  // />
-  // ))
-  // ):(
-  // <p>No messages to display.</p>
-  //      </div>
-
-  //      </div>
-  //      )
-  // }
-
   return (
-    <div className="my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
+    <div className="my-2 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
       <h1 className="text-4xl font-bold mb-4">User Dashboard</h1>
-
-      <div className="mb-4">
-        <h2 className="text-lg font-semibold mb-2">Copy Your Unique Link</h2>
-        <div className="flex items-center">
+      <div className="mb-8">
+        <h2 className="text-lg font-semibold mb-3 text-gray-700">
+          Copy Your Unique Link
+        </h2>
+        <div className="flex items-center gap-2">
           <input
             type="text"
             value={profileUrl}
             disabled
-            className="input input-bordered w-full p-2 mr-2"
+            className="w-full rounded-xl border border-gray-300 bg-gray-100 px-3 py-2 text-gray-600 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
-          <Button onClick={copyToClipboard}>Copy</Button>
+          <Button
+            onClick={copyToClipboard}
+            className="rounded-xl text-white px-4 py-2 shadow"
+          >
+            Copy
+          </Button>
         </div>
       </div>
 
@@ -203,9 +147,7 @@ function page() {
           Accept Messages: {acceptMessages ? "On" : "Off"}
         </span>
       </div>
-
       <Separator />
-
       <Button
         className="mt-4"
         variant="outline"
@@ -220,7 +162,6 @@ function page() {
           <RefreshCcw className="h-4 w-4" />
         )}
       </Button>
-
       <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
         {messages.length > 0 ? (
           messages.map((message, index) => (
