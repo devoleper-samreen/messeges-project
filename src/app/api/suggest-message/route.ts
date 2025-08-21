@@ -11,14 +11,6 @@ export async function POST() {
     const result = streamText({
       model: google("models/gemini-1.5-flash"),
       prompt,
-      // providerOptions: {
-      //   google: {
-      //     thinkingConfig: {
-      //       thinkingBudget: 500,
-      //       includeThoughts: true,
-      //     },
-      //   },
-      // },
     });
 
     return result.toTextStreamResponse();

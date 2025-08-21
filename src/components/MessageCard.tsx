@@ -54,10 +54,10 @@ function MessageCard({ message, onMessageDelete }: messageCardProps) {
       <CardHeader>
         <CardTitle>{message.content}</CardTitle>
         <CardDescription className="mt-2">{formattedDate}</CardDescription>
-        <CardAction>
+        <CardAction className="cursor-pointer">
           <AlertDialog>
             <AlertDialogTrigger>
-              <XIcon className="w-4 h-4" />
+              <XIcon className="w-4 h-4 cursor-pointer" />
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
