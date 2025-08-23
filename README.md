@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Mystery Message
 
-## Getting Started
+A web app to receive **anonymous messages** from your audience.  
+Users can share their unique link, get feedback(messages) without revealing identity, and manage everything in a simple dashboard.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+![Reciever side](public/mess1.PNG)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+![Reciever side](public/mess2.PNG)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ✨ Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- User **signup with OTP email verification**
+- Secure login system
+- Dashboard to view received messages
+- Unique shareable link for each user
+- Anyone can send messages without login
+- Toggle button to enable/disable message receiving
+- AI-powered **Suggest Messages** (using Gemini)
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🛠 Tech Stack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Frontend:** Next.js, Typescript, Shadcn UI, Tailwind CSS,
+- **Backend:** Next.js API Routes
+- **Database:** MongoDB
+- **Auth:** NextAuth / JWT
+- **Email Service:** Resend (for OTP verification)
+- **AI:** Gemini API
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🔗 How It Works
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. User signs up and logs in.
+2. Gets a dashboard with:
+   - Received messages
+   - A unique shareable URL
+   - Toggle to enable/disable messages
+3. Share the link with your audience.
+4. Anyone can send messages **without authentication**.
+5. Optional: Get suggested message ideas via AI.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 🚀 Setup
+
+1. Clone the repo:
+   ```bash
+   git clone https://github.com/devoleper-samreen/messeges-project.git
+   ```
