@@ -8,6 +8,7 @@ import axios, { AxiosError } from "axios";
 import { useParams } from "next/navigation";
 import { ApiResponse } from "@/types/ApiResponse";
 import { Loader2 } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 function PublicMessagePage() {
   const params = useParams<{ username: string }>();
@@ -83,7 +84,7 @@ function PublicMessagePage() {
         <Button
           onClick={handleSendMessage}
           disabled={isSending}
-          className="w-fulltext-white rounded-xl font-semibold py-2 cursor-pointer"
+          className="w-full text-white rounded-xl font-semibold py-3 cursor-pointer"
         >
           {isSending ? <Loader2 className="animate-spin" /> : "Send Message"}
         </Button>
@@ -95,22 +96,30 @@ function PublicMessagePage() {
           onClick={handleGetSuggestions}
           disabled={loadingSuggestions}
         >
-          {loadingSuggestions ? (
-            <Loader2 className="animate-spin" />
-          ) : (
-            "Suggested Messages"
-          )}
+          Suggested Messages
         </Button>
+
         <div className="mt-3 flex flex-col gap-3 border-2 border-black/20 py-6 px-6 rounded-xl">
-          {suggestions.map((s, idx) => (
-            <button
-              key={idx}
-              onClick={() => setMessage(s)}
-              className="px-4 py-3 rounded-full border text-sm bg-gray-100 hover:bg-indigo-100 hover:border-indigo-400 transition cursor-pointer"
-            >
-              {s}
-            </button>
-          ))}
+          {loadingSuggestions ? (
+            <div className="flex flex-col gap-3">
+              {[...Array(3)].map((_, i) => (
+                <Skeleton
+                  key={i}
+                  className="h-10 w-full rounded-full bg-gray-200 animate-pulse"
+                />
+              ))}
+            </div>
+          ) : (
+            suggestions.map((s, idx) => (
+              <button
+                key={idx}
+                onClick={() => setMessage(s)}
+                className="px-4 py-3 rounded-full border text-sm bg-gray-100 hover:bg-indigo-100 hover:border-indigo-400 transition cursor-pointer"
+              >
+                {s}
+              </button>
+            ))
+          )}
         </div>
       </Card>
     </div>

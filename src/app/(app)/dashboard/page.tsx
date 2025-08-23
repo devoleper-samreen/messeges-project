@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { Skeleton } from "@/components/ui/skeleton";
 
 function page() {
   const router = useRouter();
@@ -109,8 +110,40 @@ function page() {
 
   if (status === "loading") {
     return (
-      <div className="flex justify-center items-center h-[85vh] w-[95vw]">
-        <Loader2 className="h-10 w-10 animate-spin" />
+      <div className="my-2 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
+        {/* Heading skeleton */}
+        <Skeleton className="h-10 w-48 mb-6" />
+
+        {/* Copy link section skeleton */}
+        <div className="mb-8">
+          <Skeleton className="h-6 w-40 mb-3" />
+          <div className="flex items-center gap-2">
+            <Skeleton className="h-10 w-full rounded-xl" />
+            <Skeleton className="h-10 w-20 rounded-xl" />
+          </div>
+        </div>
+
+        {/* Switch skeleton */}
+        <div className="mb-4 flex items-center gap-4">
+          <Skeleton className="h-6 w-12 rounded-full" />
+          <Skeleton className="h-6 w-24" />
+        </div>
+        <Skeleton className="h-px w-full mb-4" />
+
+        {/* Refresh button skeleton */}
+        <Skeleton className="h-10 w-16 mb-6" />
+
+        {/* Message cards skeleton */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="flex flex-col gap-3 p-4 border rounded-xl">
+              <Skeleton className="h-6 w-32" />
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-3/4" />
+              <Skeleton className="h-10 w-24 mt-3" />
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
@@ -161,7 +194,7 @@ function page() {
       </div>
       <Separator />
       <Button
-        className="mt-4"
+        className="mt-4 cursor-pointer"
         variant="outline"
         onClick={(e) => {
           e.preventDefault();
