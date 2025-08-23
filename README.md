@@ -5,9 +5,11 @@ Users can share their unique link, get feedback(messages) without revealing iden
 
 ---
 
+![Home page](public/mess3.PNG)
+
 ![Reciever side](public/mess1.PNG)
 
-![Reciever side](public/mess2.PNG)
+![Sender side](public/mess2.PNG)
 
 ## ✨ Features
 
