@@ -48,10 +48,17 @@ const page = () => {
         const response = await axios.get(
           `/api/check-username-unique?username=${debouncedUsername}`
         );
+        console.log(response);
+
         setUsernameMessage(response.data.message);
-      } catch (error) {
+      } catch (error: any) {
         console.log(error);
-        setUsernameMessage("username is not available");
+
+        if (error.response?.data?.message) {
+          setUsernameMessage(error.response.data.message);
+        } else {
+          setUsernameMessage("Something went wrong");
+        }
       } finally {
         setIsCheckingUsername(false);
       }

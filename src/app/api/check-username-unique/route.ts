@@ -17,10 +17,16 @@ export async function GET(request: Request) {
     };
     //validate
     const result = usernameQuerySchema.safeParse(queryParam);
+    console.log("This is the result: ", result);
 
     if (!result.success) {
       const usernameErrors = result.error.format().username?._errors || [];
       console.log("Validation errors found:", usernameErrors);
+      console.log(
+        usernameErrors.length > 0
+          ? usernameErrors.join(",")
+          : "Invalid username"
+      );
 
       return Response.json(
         {
@@ -33,6 +39,8 @@ export async function GET(request: Request) {
         { status: 400 }
       );
     }
+
+    console.log("hello");
 
     const { username } = result.data;
 
