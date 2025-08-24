@@ -205,9 +205,30 @@ function Page() {
           <RefreshCcw className="h-4 w-4" />
         )}
       </Button>
-      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
         {messages.length > 0 ? (
           messages.map((message, index) => (
+            <MessageCard
+              key={message._id as string}
+              message={message}
+              onMessageDelete={handleDeleteMessage}
+            />
+          ))
+        ) : (
+          <p>No messages to display.</p>
+        )}
+      </div> */}
+      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
+        {isLoading ? (
+          // Show 4 skeleton cards
+          Array.from({ length: 4 }).map((_, i) => (
+            <div
+              key={i}
+              className="h-32 w-full rounded-xl bg-gray-200 animate-pulse"
+            ></div>
+          ))
+        ) : messages.length > 0 ? (
+          messages.map((message) => (
             <MessageCard
               key={message._id as string}
               message={message}
