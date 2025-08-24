@@ -50,7 +50,6 @@ function PublicMessagePage() {
     setLoadingSuggestions(true);
     try {
       const res = await axios.post("/api/suggest-message");
-      console.log(res);
 
       // split the AI string by '||' to get array
       const suggestionList = res.data.split("||").map((s: string) => s.trim());

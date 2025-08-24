@@ -13,7 +13,7 @@ export async function POST(request: Request) {
       return Response.json(
         {
           success: false,
-          message: "User not found",
+          message: "Receiver not found",
         },
         { status: 404 }
       );

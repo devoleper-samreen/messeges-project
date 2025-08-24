@@ -57,7 +57,6 @@ function page() {
   const fetchMessages = useCallback(
     async (refresh?: boolean) => {
       setIsLoading(true);
-      setIsSwitching(true);
       try {
         const response = await axios.get<ApiResponse>("/api/get-messages");
         setMessages(response.data.messages || []);
@@ -70,7 +69,6 @@ function page() {
         toast.error(AxiosErrror.response?.data.message);
       } finally {
         setIsLoading(false);
-        setIsSwitching(false);
       }
     },
     [setIsLoading, setMessages, setIsSwitching]

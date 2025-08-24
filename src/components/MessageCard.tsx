@@ -68,8 +68,13 @@ function MessageCard({ message, onMessageDelete }: messageCardProps) {
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={handlerDeleteConfirm}>
+                <AlertDialogCancel className="cursor-pointer">
+                  Cancel
+                </AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={handlerDeleteConfirm}
+                  className="cursor-pointer"
+                >
                   Continue
                 </AlertDialogAction>
               </AlertDialogFooter>
