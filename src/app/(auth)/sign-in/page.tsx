@@ -24,7 +24,7 @@ import Link from "next/link";
 import { signinSchema } from "@/schemas/signinSchema";
 import { signIn } from "next-auth/react";
 
-const page = () => {
+const Page = () => {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -128,4 +128,4 @@ tracking-tight mb-6"
   );
 };
 
-export default page;
+export default Page;

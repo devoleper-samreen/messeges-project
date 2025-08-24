@@ -17,7 +17,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
 
-function page() {
+function Page() {
   const router = useRouter();
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -222,4 +222,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;

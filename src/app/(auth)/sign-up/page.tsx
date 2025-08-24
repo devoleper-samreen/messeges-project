@@ -22,7 +22,7 @@ import { Button } from "@/components/ui/button";
 import { Loader } from "lucide-react";
 import Link from "next/link";
 
-const page = () => {
+const Page = () => {
   const [username, setUsername] = useState<string>("");
   const [usernameMessage, setUsernameMessage] = useState<string>("");
   const [isCheckingUsername, setIsCheckingUsername] = useState<boolean>(false);
@@ -196,4 +196,4 @@ tracking-tight lg:text-5xl mb-6"
   );
 };
 
-export default page;
+export default Page;

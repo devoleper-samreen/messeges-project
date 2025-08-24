@@ -20,7 +20,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
-function page() {
+function Page() {
   const router = useRouter();
   const params = useParams<{ username: string }>();
 
@@ -94,4 +94,4 @@ tracking-tight mb-6"
   );
 }
 
-export default page;
+export default Page;
