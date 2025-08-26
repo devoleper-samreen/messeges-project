@@ -9,7 +9,7 @@ export default function Page() {
   useEffect(() => {
     const fetchAnalysis = async () => {
       try {
-        const res = await axios.get("/api/analyze-feedback");
+        const res = await axios.get("/api/analyze-messages");
         console.log(res);
 
         if (res.data.success) {
