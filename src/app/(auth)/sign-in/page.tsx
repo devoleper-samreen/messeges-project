@@ -55,6 +55,11 @@ const Page = () => {
     }
   };
 
+  const handleGetCredentials = () => {
+    form.setValue("identifier", "sam000");
+    form.setValue("password", "12345678");
+  };
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md p-8 space-y-8bg-white rounded-lg shadow-md">
@@ -107,9 +112,14 @@ tracking-tight mb-6"
                 </FormItem>
               )}
             />
-            <Button type="submit" className="cursor-pointer">
-              {isSubmitting ? <Loader className="animate-spin" /> : "Sign in"}
-            </Button>
+            <div className="flex flex-col gap-2">
+              <Button type="submit" className="cursor-pointer">
+                {isSubmitting ? <Loader className="animate-spin" /> : "Sign in"}
+              </Button>
+              <Button className="cursor-pointer" onClick={handleGetCredentials}>
+                Get Credentials
+              </Button>
+            </div>
           </form>
           <div className="text-center mt-4">
             <p>
