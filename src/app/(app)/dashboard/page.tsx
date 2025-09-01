@@ -8,7 +8,7 @@ import { acceptMessageSchema } from "@/schemas/accepMessageSchema";
 import { ApiResponse } from "@/types/ApiResponse";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
-import { Loader2, RefreshCcw } from "lucide-react";
+import { Loader2, RefreshCcw, Link as LinkIcon, Sparkles } from "lucide-react";
 import { User } from "next-auth";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -71,10 +71,9 @@ function Page() {
         setIsLoading(false);
       }
     },
-    [setIsLoading, setMessages, setIsSwitching]
+    [setIsLoading, setMessages]
   );
 
-  //handle switch case
   const handleSwitchChange = async () => {
     try {
       const response = await axios.post<ApiResponse>("/api/accept-messages", {
@@ -108,39 +107,34 @@ function Page() {
 
   if (status === "loading") {
     return (
-      <div className="my-2 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
-        {/* Heading skeleton */}
-        <Skeleton className="h-10 w-48 mb-6" />
-
-        {/* Copy link section skeleton */}
-        <div className="mb-8">
-          <Skeleton className="h-6 w-40 mb-3" />
-          <div className="flex items-center gap-2">
-            <Skeleton className="h-10 w-full rounded-xl" />
-            <Skeleton className="h-10 w-20 rounded-xl" />
-          </div>
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 py-12 px-4 md:px-8 lg:mx-auto relative overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
+          <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-1000"></div>
         </div>
-
-        {/* Switch skeleton */}
-        <div className="mb-4 flex items-center gap-4">
-          <Skeleton className="h-6 w-12 rounded-full" />
-          <Skeleton className="h-6 w-24" />
-        </div>
-        <Skeleton className="h-px w-full mb-4" />
-
-        {/* Refresh button skeleton */}
-        <Skeleton className="h-10 w-16 mb-6" />
-
-        {/* Message cards skeleton */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {[...Array(4)].map((_, i) => (
-            <div key={i} className="flex flex-col gap-3 p-4 border rounded-xl">
-              <Skeleton className="h-6 w-32" />
-              <Skeleton className="h-4 w-full" />
-              <Skeleton className="h-4 w-3/4" />
-              <Skeleton className="h-10 w-24 mt-3" />
+        <div className="relative z-10 max-w-6xl mx-auto">
+          <Skeleton className="h-12 w-64 mb-8 bg-white/10 rounded-2xl" />
+          <div className="mb-8">
+            <Skeleton className="h-6 w-48 mb-4 bg-white/10 rounded-2xl" />
+            <div className="flex items-center gap-3">
+              <Skeleton className="h-12 w-full bg-white/10 rounded-2xl" />
+              <Skeleton className="h-12 w-24 bg-white/10 rounded-2xl" />
             </div>
-          ))}
+          </div>
+          <div className="flex items-center gap-4 mb-6">
+            <Skeleton className="h-6 w-12 bg-white/10 rounded-full" />
+            <Skeleton className="h-6 w-32 bg-white/10 rounded-2xl" />
+            <Skeleton className="h-12 w-16 bg-white/10 rounded-2xl ml-auto" />
+          </div>
+          <Skeleton className="h-px w-full bg-white/10 mb-6" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {[...Array(4)].map((_, i) => (
+              <Skeleton
+                key={i}
+                className="h-40 w-full bg-white/10 rounded-3xl"
+              />
+            ))}
+          </div>
         </div>
       </div>
     );
@@ -152,92 +146,116 @@ function Page() {
   }
 
   return (
-    <div className="my-2 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
-      <h1 className="text-4xl font-bold mb-4">User Dashboard</h1>
-      <div className="mb-8">
-        <h2 className="text-lg font-semibold mb-3 text-gray-700">
-          Copy Your Unique Link
-        </h2>
-        <div className="flex items-center gap-2">
-          <input
-            type="text"
-            value={profileUrl}
-            disabled
-            className="w-full rounded-xl border border-gray-300 bg-gray-100 px-3 py-2 text-gray-600 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
-          <Button
-            onClick={copyToClipboard}
-            className="rounded-xl text-white px-4 py-2 shadow cursor-pointer"
-          >
-            Copy
-          </Button>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 py-12 px-4 md:px-8 lg:mx-auto relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
+        <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-1000"></div>
+        <div className="absolute bottom-1/4 left-1/3 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-2000"></div>
       </div>
 
-      <div className="mb-4">
-        <Switch
-          {...register("acceptMessage")}
-          checked={acceptMessages}
-          onCheckedChange={handleSwitchChange}
-          disabled={isSwitching}
-        />
-        <span className={`ml-2`}>
-          Accept Messages :
-          <span
-            className={`${acceptMessages ? "text-green-500" : "text-red-500"} `}
+      <div className="relative z-10 max-w-6xl mx-auto">
+        {/* Copy Link Section */}
+        <div className="mb-8">
+          <h2 className="text-lg font-semibold mb-3 text-gray-300 flex items-center justify-center space-x-2">
+            <LinkIcon className="w-5 h-5 text-purple-400" />
+            <span>Share Your Unique Link</span>
+          </h2>
+          <div className="flex items-center gap-3">
+            <input
+              type="text"
+              value={profileUrl}
+              disabled
+              className="w-full rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md px-4 py-3 text-gray-300 text-xl focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300 font-semibold"
+            />
+            <Button
+              onClick={copyToClipboard}
+              className="cursor-pointer group relative inline-flex items-center justify-center px-8 py-5 text-sm font-semibold text-white bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl hover:from-purple-500 hover:to-pink-500 transform hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/25 transition-all duration-300"
+            >
+              <span className="relative z-10">Copy</span>
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-100 blur transition-all duration-300"></div>
+            </Button>
+          </div>
+        </div>
+
+        {/* Switch and Refresh Button Section */}
+        <div className="mb-6 flex items-center justify-between gap-4 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-4 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20">
+          <div className="flex items-center gap-4">
+            <Switch
+              {...register("acceptMessage")}
+              checked={acceptMessages}
+              onCheckedChange={handleSwitchChange}
+              disabled={isSwitching}
+              className="data-[state=checked]:bg-purple-500"
+            />
+            <span className="text-gray-300">
+              Accept Messages:{" "}
+              <span
+                className={`${
+                  acceptMessages ? "text-green-400" : "text-red-400"
+                } font-semibold`}
+              >
+                {acceptMessages ? "On" : "Off"}
+              </span>
+            </span>
+          </div>
+          <Button
+            variant="outline"
+            onClick={(e) => {
+              e.preventDefault();
+              fetchMessages(true);
+            }}
+            className="cursor-pointer group relative inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-white border border-white/10 bg-white/5 backdrop-blur-md rounded-2xl hover:bg-white/10 transform hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/25 transition-all duration-300"
           >
-            {acceptMessages ? " On" : " Off"}
-          </span>
-        </span>
-      </div>
-      <Separator />
-      <Button
-        className="mt-4 cursor-pointer"
-        variant="outline"
-        onClick={(e) => {
-          e.preventDefault();
-          fetchMessages(true);
-        }}
-      >
-        {isLoading ? (
-          <Loader2 className="h-4 w-4 animate-spin" />
-        ) : (
-          <RefreshCcw className="h-4 w-4" />
-        )}
-      </Button>
-      {/* <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
-        {messages.length > 0 ? (
-          messages.map((message, index) => (
-            <MessageCard
-              key={message._id as string}
-              message={message}
-              onMessageDelete={handleDeleteMessage}
-            />
-          ))
-        ) : (
-          <p>No messages to display.</p>
-        )}
-      </div> */}
-      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
-        {isLoading ? (
-          // Show 4 skeleton cards
-          Array.from({ length: 4 }).map((_, i) => (
-            <div
-              key={i}
-              className="h-32 w-full rounded-xl bg-gray-200 animate-pulse"
-            ></div>
-          ))
-        ) : messages.length > 0 ? (
-          messages.map((message) => (
-            <MessageCard
-              key={message._id as string}
-              message={message}
-              onMessageDelete={handleDeleteMessage}
-            />
-          ))
-        ) : (
-          <p>No messages to display.</p>
-        )}
+            {isLoading ? (
+              <Loader2 className="h-5 w-5 animate-spin text-purple-400" />
+            ) : (
+              <RefreshCcw className="h-5 w-5 text-purple-400" />
+            )}
+            <span className="ml-2 text-purple-400 hover:text-purple-500">
+              Refresh Messages
+            </span>
+          </Button>
+        </div>
+
+        <Separator className="bg-white/10 mb-6" />
+
+        {/* Messages Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {isLoading ? (
+            Array.from({ length: 4 }).map((_, i) => (
+              <Skeleton
+                key={i}
+                className="h-40 w-full bg-white/10 rounded-3xl animate-pulse"
+              />
+            ))
+          ) : messages.length > 0 ? (
+            messages.map((message) => (
+              <div
+                key={message._id as string}
+                className="group relative overflow-hidden border-0 bg-gradient-to-br from-slate-800/80 to-purple-900/80 backdrop-blur-xl rounded-3xl hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-500 hover:scale-105"
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <MessageCard
+                  message={message}
+                  onMessageDelete={handleDeleteMessage}
+                />
+                <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                  <div className="absolute inset-0 rounded-3xl border-2 border-purple-500/30 animate-pulse"></div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p className="text-center text-gray-400 col-span-2">
+              No messages to display. Share your link to receive anonymous
+              messages!
+            </p>
+          )}
+        </div>
+
+        {/* Floating Elements */}
+        <div className="fixed top-20 left-10 w-3 h-3 bg-purple-400 rounded-full animate-ping opacity-60"></div>
+        <div className="fixed top-40 right-20 w-2 h-2 bg-pink-400 rounded-full animate-ping opacity-40 delay-1000"></div>
       </div>
     </div>
   );

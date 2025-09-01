@@ -50,37 +50,47 @@ function MessageCard({ message, onMessageDelete }: messageCardProps) {
   });
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{message.content}</CardTitle>
-        <CardDescription className="mt-2">{formattedDate}</CardDescription>
-        <CardAction className="cursor-pointer">
+    <Card className="relative border-0 bg-transparent">
+      <CardHeader className="z-10 p-6">
+        <CardAction className="absolute top-4 right-4 cursor-pointer">
           <AlertDialog>
             <AlertDialogTrigger>
-              <XIcon className="w-4 h-4 cursor-pointer" />
+              <div className="cursor-pointer group/icon relative p-2 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full hover:scale-110 transition-all duration-100 hover:shadow-lg hover:shadow-purple-500/25">
+                <XIcon className="w-4 h-4 text-white" />
+                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 group-hover/icon:opacity-100 blur transition-all duration-100"></div>
+              </div>
             </AlertDialogTrigger>
-            <AlertDialogContent>
+            <AlertDialogContent className="bg-gradient-to-br from-slate-800/80 to-purple-900/80 backdrop-blur-xl border border-white/10 rounded-2xl">
               <AlertDialogHeader>
-                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                <AlertDialogDescription>
+                <AlertDialogTitle className="text-white text-xl font-bold">
+                  Are you sure?
+                </AlertDialogTitle>
+                <AlertDialogDescription className="text-gray-300">
                   This action cannot be undone. This will permanently delete
-                  your account and remove your data from our servers.
+                  this message from our servers.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel className="cursor-pointer">
+                <AlertDialogCancel className="cursor-pointer bg-white/5 border border-white/10 text-gray-300 hover:bg-white/10 hover:text-white rounded-2xl transition-all duration-300">
                   Cancel
                 </AlertDialogCancel>
                 <AlertDialogAction
                   onClick={handlerDeleteConfirm}
-                  className="cursor-pointer"
+                  className="cursor-pointer group relative inline-flex items-center justify-center px-6 py-2 text-sm font-semibold text-white bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl hover:from-purple-500 hover:to-pink-500 transform hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/25 transition-all duration-300"
                 >
-                  Continue
+                  <span className="relative z-10">Delete</span>
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-100 blur transition-all duration-300"></div>
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
         </CardAction>
+        <CardTitle className="text-lg font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent leading-relaxed group-hover:text-white transition-colors duration-150">
+          {message.content}
+        </CardTitle>
+        <CardDescription className="mt-2 text-gray-400 group-hover:text-gray-300">
+          {formattedDate}
+        </CardDescription>
       </CardHeader>
     </Card>
   );
