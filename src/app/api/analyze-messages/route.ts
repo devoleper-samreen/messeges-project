@@ -64,7 +64,7 @@ You are an AI assistant that analyzes anonymous messages and groups them into me
 Given the following list of anonymous messages, analyze them and group them into 3-5 clusters based on their themes, topics, or sentiment.
 
 Messages:
-${transformedMessages.map((msg, i) => `${i + 1}. ${msg}`).join("\n")}
+${transformedMessages.map((msg: string, i: number) => `${i + 1}. ${msg}`).join("\n")}
 
 Please respond with a JSON object in this exact format:
 {
