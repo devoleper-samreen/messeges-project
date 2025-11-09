@@ -5,7 +5,10 @@ import UserModel from "@/model/user";
 import mongoose from "mongoose";
 import { User } from "next-auth";
 import { Message } from "@/model/user";
-import { log } from "console";
+import { google } from "@ai-sdk/google";
+import { generateText } from "ai";
+
+export const maxDuration = 30;
 
 export async function GET() {
   await dbConnect();
@@ -37,24 +40,80 @@ export async function GET() {
       },
     ]);
 
-    console.log("Messages fetched:", messages);
+    // Handle case when no messages exist
+    if (!messages || messages.length === 0 || !messages[0]?.messages) {
+      return Response.json(
+        {
+          success: true,
+          aiResult: { clusters: [] },
+        },
+        { status: 200 }
+      );
+    }
 
     const transformedMessages = messages[0].messages.map(
       (msg: Message) => msg.content
     );
-    console.log("Transformed Messages:", transformedMessages);
 
-    // Send to n8n webhook
-    const n8nRes = await fetch(
-      "https://maliksamreen721.app.n8n.cloud/webhook/analyze-feedback",
-      {
-        method: "POST",
-        body: JSON.stringify({ messages: transformedMessages }),
+    console.log("Analyzing messages:", transformedMessages.length);
+
+    // Use Gemini AI to analyze and cluster messages
+    const prompt = `
+You are an AI assistant that analyzes anonymous messages and groups them into meaningful themes/clusters.
+
+Given the following list of anonymous messages, analyze them and group them into 3-5 clusters based on their themes, topics, or sentiment.
+
+Messages:
+${transformedMessages.map((msg, i) => `${i + 1}. ${msg}`).join("\n")}
+
+Please respond with a JSON object in this exact format:
+{
+  "clusters": [
+    {
+      "title": "Theme name (e.g., 'Compliments & Appreciation')",
+      "messages": ["message 1", "message 2"]
+    }
+  ]
+}
+
+Rules:
+- Create 3-5 meaningful clusters
+- Each cluster should have a clear, descriptive title
+- Group similar messages together
+- Include all messages in at least one cluster
+- Return ONLY valid JSON, no extra text`;
+
+    const result = await generateText({
+      model: google("gemini-2.5-flash"),
+      prompt,
+    });
+
+    console.log("AI Raw Response:", result.text);
+
+    // Parse AI response
+    let aiResult;
+    try {
+      // Extract JSON from response (in case AI adds extra text)
+      const jsonMatch = result.text.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        aiResult = JSON.parse(jsonMatch[0]);
+      } else {
+        throw new Error("No JSON found in response");
       }
-    );
+    } catch (parseError) {
+      console.error("Failed to parse AI response:", parseError);
+      // Fallback: create simple clusters
+      aiResult = {
+        clusters: [
+          {
+            title: "All Messages",
+            messages: transformedMessages,
+          },
+        ],
+      };
+    }
 
-    const aiResult = await n8nRes.json();
-    console.log("AI Result from api:", aiResult);
+    console.log("AI Result:", aiResult);
 
     return Response.json(
       {
@@ -64,10 +123,11 @@ export async function GET() {
       { status: 200 }
     );
   } catch (error) {
+    console.error("Error analyzing messages:", error);
     return Response.json(
       {
         success: false,
-        message: "Internal Error",
+        message: "Failed to analyze messages",
       },
       { status: 500 }
     );
